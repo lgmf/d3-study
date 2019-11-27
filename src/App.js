@@ -5,17 +5,17 @@ import LineChart from "./components/LineChart";
 
 import "./App.css";
 
-const _today = new Date();
+const today = new Date();
 
-const _tenDaysAgo = new Date(
-  _today.getFullYear(),
-  _today.getMonth(),
-  _today.getDate() - 10
+const tenDaysAgo = new Date(
+  today.getFullYear(),
+  today.getMonth(),
+  today.getDate() - 10
 );
 
-export default function() {
-  const [start] = useState(_tenDaysAgo);
-  const [end] = useState(_today);
+const App = () => {
+  const [start] = useState(tenDaysAgo);
+  const [end] = useState(today);
   const [loading, bitcoinData] = withBitcoinData(start, end);
 
   if (loading) {
@@ -27,4 +27,6 @@ export default function() {
       <LineChart data={bitcoinData}></LineChart>
     </div>
   );
-}
+};
+
+export default App;

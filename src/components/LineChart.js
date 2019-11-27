@@ -2,7 +2,15 @@ import React, { useEffect } from "react";
 
 import * as d3 from "d3";
 
-function _drawChart(data) {
+const LineChart = ({ data }) => {
+  useEffect(() => {
+    drawChart(data);
+  });
+
+  return <svg></svg>;
+};
+
+function drawChart(data) {
   const svgWidth = 800;
   const svgHeight = 600;
   const margin = { top: 20, right: 20, bottom: 30, left: 50 };
@@ -69,10 +77,4 @@ function _drawChart(data) {
     .attr("d", line);
 }
 
-export default function({ data }) {
-  useEffect(() => {
-    _drawChart(data);
-  });
-
-  return <svg></svg>;
-}
+export default LineChart;

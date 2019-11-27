@@ -2,17 +2,6 @@ import { useState, useEffect } from "react";
 
 const apiUrl = "https://api.coindesk.com/v1/bpi/historical/close.json";
 
-const _getISODate = jsDate => {
-  return jsDate.toISOString().split("T")[0];
-};
-
-const _getBitcoinData = ({ bpi }) => {
-  return Object.entries(bpi).map(([date, value]) => ({
-    date: new Date(date),
-    value
-  }));
-};
-
 /**
  * start = JS date
  * end = JS date
@@ -25,8 +14,8 @@ export default function(start, end) {
     let url = apiUrl;
 
     if (!!start && !!end) {
-      const strStartDate = _getISODate(start);
-      const strEndDate = _getISODate(end);
+      const strStartDate = getISODate(start);
+      const strEndDate = getISODate(end);
       debugger;
       url = `${apiUrl}?start=${strStartDate}&end=${strEndDate}`;
     }
@@ -36,7 +25,7 @@ export default function(start, end) {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        const bitcoinData = _getBitcoinData(data);
+        const bitcoinData = formatBitcoinData(data);
         setBitcoinData(bitcoinData);
         setLoading(false);
       })
@@ -48,3 +37,14 @@ export default function(start, end) {
 
   return [loading, bitcoinData];
 }
+
+const getISODate = jsDate => {
+  return jsDate.toISOString().split("T")[0];
+};
+
+const formatBitcoinData = ({ bpi }) => {
+  return Object.entries(bpi).map(([date, value]) => ({
+    date: new Date(date),
+    value
+  }));
+};
