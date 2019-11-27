@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import withBitcoinData from "./core/withBitcoinData";
+import LineChart from "./components/LineChart";
+
+import "./App.css";
+
+const _today = new Date();
+
+const _tenDaysAgo = new Date(
+  _today.getFullYear(),
+  _today.getMonth(),
+  _today.getDate() - 10
+);
+
+export default function() {
+  const [start] = useState(_tenDaysAgo);
+  const [end] = useState(_today);
+  const [loading, bitcoinData] = withBitcoinData(start, end);
+
+  if (loading) {
+    return <span>Loading...</span>;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <LineChart data={bitcoinData}></LineChart>
     </div>
   );
 }
-
-export default App;
