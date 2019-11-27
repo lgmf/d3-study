@@ -16,7 +16,7 @@ export default function(start, end) {
     if (!!start && !!end) {
       const strStartDate = getISODate(start);
       const strEndDate = getISODate(end);
-      debugger;
+
       url = `${apiUrl}?start=${strStartDate}&end=${strEndDate}`;
     }
 
