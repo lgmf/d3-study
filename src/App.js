@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <LineChart data={bitcoinData}></LineChart>
+      <LineChart title="Bitcoin Price over time" data={bitcoinData}></LineChart>
     </div>
   );
 };

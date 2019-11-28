@@ -2,12 +2,17 @@ import React, { useEffect } from "react";
 
 import * as d3 from "d3";
 
-const LineChart = ({ data }) => {
+const LineChart = ({ title, data }) => {
   useEffect(() => {
     drawChart(data);
   });
 
-  return <svg></svg>;
+  return (
+    <React.Fragment>
+      <h3>{title}</h3>
+      <svg></svg>
+    </React.Fragment>
+  );
 };
 
 function drawChart(data) {
@@ -22,52 +27,51 @@ function drawChart(data) {
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
-  const g = svg
+  const chartGroup = svg
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  const x = d3.scaleTime().rangeRound([0, width]);
+  const xScale = d3.scaleTime().rangeRound([0, width]);
 
-  const y = d3.scaleLinear().rangeRound([height, 0]);
+  const yScale = d3.scaleLinear().rangeRound([height, 0]);
 
   const line = d3
     .line()
     .x(function(d) {
-      return x(d.date);
+      return xScale(d.date);
     })
     .y(function(d) {
-      return y(d.value);
+      return yScale(d.value);
     });
 
-  x.domain(
+  xScale.domain(
     d3.extent(data, function(d) {
       return d.date;
     })
   );
 
-  y.domain(
+  yScale.domain(
     d3.extent(data, function(d) {
       return d.value;
     })
   );
 
-  g.append("g")
+  chartGroup
+    .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .select(".domain")
-    .remove();
+    .call(d3.axisBottom(xScale));
 
-  g.append("g")
-    .call(d3.axisLeft(y))
+  chartGroup
+    .append("g")
+    .call(d3.axisLeft(yScale))
     .append("text")
     .attr("fill", "#000")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
+    .attr("y", -5)
+    .style("font-weight", "bold")
     .text("Price ($)");
 
-  g.append("path")
+  chartGroup
+    .append("path")
     .datum(data)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
