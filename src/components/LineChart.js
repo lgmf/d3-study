@@ -74,7 +74,7 @@ function drawChartOn(svgEl, data) {
     .append("path")
     .datum(data)
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", "#4682b4")
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
     .attr("stroke-width", 1.5)

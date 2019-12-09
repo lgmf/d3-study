@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import withBitcoinData from "./core/withBitcoinData";
 import LineChart from "./components/LineChart";
+import PieChart from "./components/PieChart";
 
 import "./App.css";
 
@@ -24,8 +25,8 @@ const App = () => {
 
   return (
     <div className="app">
-      <LineChart title="Bitcoin Price over time" data={bitcoinData}></LineChart>
-      <LineChart title="Bitcoin Price over time" data={bitcoinData}></LineChart>
+      <LineChart title="Line Chart" data={bitcoinData}></LineChart>
+      <PieChart title="Pie Chart" data={{ a: 9, b: 20, c: 30 }}></PieChart>
     </div>
   );
 };
