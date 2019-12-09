@@ -19,49 +19,50 @@ const PieChart = ({ title, data }) => {
 };
 
 function drawChartOn(svgEl, data) {
-  const svgWidth = 800;
-  const svgHeight = 600;
-  const margin = {
-    top: 20,
-    right: 20,
-    bottom: 30,
-    left: 50
-  };
-  const width = svgWidth - margin.left - margin.right;
-  const height = svgHeight - margin.top - margin.bottom;
-  const radius = Math.min(width, height) / 2;
+  setTimeout(() => {
+    const svgWidth = svgEl.width.animVal.value;
+    const svgHeight = svgEl.height.animVal.value;
 
-  const chartGroup = d3
-    .select(svgEl)
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
-    .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    const margin = {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 50
+    };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+    const radius = Math.min(width, height) / 2;
 
-  const colors = d3
-    .scaleOrdinal()
-    .range(["var(--primary)", "var(--secondary)", "var(--tertiary)"]);
+    const chartGroup = d3
+      .select(svgEl)
+      .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  const pie = d3.pie();
-  const pieData = pie(Object.values(data));
+    const colors = d3
+      .scaleOrdinal()
+      .range(["var(--primary)", "var(--secondary)", "var(--tertiary)"]);
 
-  const arc = d3
-    .arc()
-    .innerRadius(0)
-    .outerRadius(radius);
+    const pie = d3.pie();
+    const pieData = pie(Object.values(data));
 
-  // arcs
-  chartGroup
-    .selectAll("arc")
-    .data(pieData)
-    .enter()
-    .append("g")
-    .attr("class", "arc")
-    .append("path")
-    .attr("fill", function(d) {
-      return colors(d.index);
-    })
-    .attr("d", arc);
+    const arc = d3
+      .arc()
+      .innerRadius(0)
+      .outerRadius(radius);
+
+    // arcs
+    chartGroup
+      .selectAll("arc")
+      .data(pieData)
+      .enter()
+      .append("g")
+      .attr("class", "arc")
+      .append("path")
+      .attr("fill", function(d) {
+        return colors(d.index);
+      })
+      .attr("d", arc);
+  }, 0);
 }
 
 export default PieChart;

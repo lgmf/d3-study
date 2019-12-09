@@ -19,66 +19,64 @@ const LineChart = ({ title, data }) => {
 };
 
 function drawChartOn(svgEl, data) {
-  const svgWidth = 800;
-  const svgHeight = 600;
-  const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-  const width = svgWidth - margin.left - margin.right;
-  const height = svgHeight - margin.top - margin.bottom;
+  setTimeout(() => {
+    const svgWidth = svgEl.width.animVal.value;
+    const svgHeight = svgEl.height.animVal.value;
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
 
-  const svg = d3
-    .select(svgEl)
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
+    const chartGroup = d3
+      .select(svgEl)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  const chartGroup = svg
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    const xScale = d3.scaleTime().rangeRound([0, width]);
 
-  const xScale = d3.scaleTime().rangeRound([0, width]);
+    const yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-  const yScale = d3.scaleLinear().rangeRound([height, 0]);
+    const line = d3
+      .line()
+      .x(function(d) {
+        return xScale(d.date);
+      })
+      .y(function(d) {
+        return yScale(d.value);
+      });
 
-  const line = d3
-    .line()
-    .x(function(d) {
-      return xScale(d.date);
-    })
-    .y(function(d) {
-      return yScale(d.value);
-    });
+    xScale.domain(
+      d3.extent(data, function(d) {
+        return d.date;
+      })
+    );
 
-  xScale.domain(
-    d3.extent(data, function(d) {
-      return d.date;
-    })
-  );
+    yScale.domain(
+      d3.extent(data, function(d) {
+        return d.value;
+      })
+    );
 
-  yScale.domain(
-    d3.extent(data, function(d) {
-      return d.value;
-    })
-  );
+    chartGroup
+      .append("g")
+      .attr("class", "xaxis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale));
 
-  chartGroup
-    .append("g")
-    .attr("class", "xaxis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale));
+    chartGroup
+      .append("g")
+      .attr("class", "yaxis")
+      .call(d3.axisLeft(yScale));
 
-  chartGroup
-    .append("g")
-    .attr("class", "yaxis")
-    .call(d3.axisLeft(yScale));
-
-  chartGroup
-    .append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "var(--primary)")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.5)
-    .attr("d", line);
+    chartGroup
+      .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "var(--primary)")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 1.5)
+      .attr("d", line);
+  }, 0);
 }
 
 export default LineChart;
