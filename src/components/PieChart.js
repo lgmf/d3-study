@@ -38,7 +38,9 @@ function drawChartOn(svgEl, data) {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  const colors = d3.scaleOrdinal().range(["#4682b4", "#6046b4", "#46b477"]);
+  const colors = d3
+    .scaleOrdinal()
+    .range(["var(--primary)", "var(--secondary)", "var(--tertiary)"]);
 
   const pie = d3.pie();
   const pieData = pie(Object.values(data));
