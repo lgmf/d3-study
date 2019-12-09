@@ -23,7 +23,8 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div className="app">
+      <LineChart title="Bitcoin Price over time" data={bitcoinData}></LineChart>
       <LineChart title="Bitcoin Price over time" data={bitcoinData}></LineChart>
     </div>
   );

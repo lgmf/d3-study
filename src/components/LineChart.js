@@ -1,21 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import * as d3 from "d3";
 
 const LineChart = ({ title, data }) => {
+  const svgEl = useRef(null);
+
   useEffect(() => {
-    drawChart(data);
-  });
+    if (!svgEl) return;
+    drawChartOn(svgEl.current, data);
+  }, [svgEl, data]);
 
   return (
-    <React.Fragment>
+    <div className="line-chart">
       <h3>{title}</h3>
-      <svg></svg>
-    </React.Fragment>
+      <svg className="chart" ref={svgEl}></svg>
+    </div>
   );
 };
 
-function drawChart(data) {
+function drawChartOn(svgEl, data) {
   const svgWidth = 800;
   const svgHeight = 600;
   const margin = { top: 20, right: 20, bottom: 30, left: 50 };
@@ -23,7 +26,7 @@ function drawChart(data) {
   const height = svgHeight - margin.top - margin.bottom;
 
   const svg = d3
-    .select("svg")
+    .select(svgEl)
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
@@ -58,17 +61,14 @@ function drawChart(data) {
 
   chartGroup
     .append("g")
+    .attr("class", "xaxis")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale));
 
   chartGroup
     .append("g")
-    .call(d3.axisLeft(yScale))
-    .append("text")
-    .attr("fill", "#000")
-    .attr("y", -5)
-    .style("font-weight", "bold")
-    .text("Price ($)");
+    .attr("class", "yaxis")
+    .call(d3.axisLeft(yScale));
 
   chartGroup
     .append("path")
