@@ -50,18 +50,36 @@ function drawChartOn(svgEl, data) {
       .innerRadius(0)
       .outerRadius(radius);
 
-    // arcs
-    chartGroup
+    const label = d3
+      .arc()
+      .outerRadius(radius)
+      .innerRadius(radius - 80);
+
+    const arcs = chartGroup
       .selectAll("arc")
       .data(pieData)
       .enter()
       .append("g")
-      .attr("class", "arc")
+      .attr("class", "arc");
+
+    // create the pies
+    arcs
       .append("path")
       .attr("fill", function(d) {
         return colors(d.index);
       })
       .attr("d", arc);
+
+    arcs
+      .append("text")
+      .attr("transform", function(d) {
+        return "translate(" + label.centroid(d) + ")";
+      })
+      .text(function(d) {
+        const keys = Object.keys(data);
+        return keys[d.index];
+      })
+      .attr("fill", "#fff");
   }, 0);
 }
 
