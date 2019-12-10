@@ -25,8 +25,15 @@ const App = () => {
 
   return (
     <div className="app">
-      <LineChart title="Line Chart" data={bitcoinData}></LineChart>
-      <PieChart title="Pie Chart" data={{ a: 9, b: 20, c: 30 }}></PieChart>
+      <h1 className="title">D3 Study</h1>
+      <div className="dashboard">
+        <div className="card">
+          <LineChart title="Line Chart" data={bitcoinData}></LineChart>
+        </div>
+        <div className="card">
+          <PieChart title="Pie Chart" data={{ a: 9, b: 20, c: 30 }}></PieChart>
+        </div>
+      </div>
     </div>
   );
 };

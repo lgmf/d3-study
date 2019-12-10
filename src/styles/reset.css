@@ -1,8 +1,24 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 
+* {
+  box-sizing: border-box;
+}
+
 body {
-  margin: 0;
+  min-height: calc(100vh - 20px);
   font-family: "Montserrat", sans-serif;
+  background: var(--background);
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
 }
 
 svg {
